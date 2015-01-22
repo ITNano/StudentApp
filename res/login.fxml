@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.LoginController">
+   <children>
+      <Pane prefHeight="77.0" prefWidth="800.0" style="-fx-background-color: #34495e;">
+         <children>
+            <Label alignment="CENTER" layoutX="12.0" layoutY="5.0" prefHeight="68.0" prefWidth="777.0" text="STUDENT TERMINAL" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="studentID" alignment="CENTER" layoutX="222.0" layoutY="216.0" prefHeight="46.0" prefWidth="356.0" promptText="Student ID" />
+      <Button layoutX="327.0" layoutY="300.0" mnemonicParsing="false" onAction="#login" prefHeight="46.0" prefWidth="146.0" text="Log in" />
+      <Hyperlink layoutX="222.0" layoutY="410.0" onAction="#gotoRegister" text="Register" />
+      <Hyperlink layoutX="222.0" layoutY="439.0" onAction="#gotoForgotID" text="Forgot student ID" />
+   </children>
+</Pane>

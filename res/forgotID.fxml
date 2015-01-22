@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.ForgotIDController">
+   <children>
+      <Pane prefHeight="77.0" prefWidth="800.0" style="-fx-background-color: #34495e;">
+         <children>
+            <Label alignment="CENTER" layoutX="12.0" layoutY="5.0" prefHeight="68.0" prefWidth="777.0" text="STUDENT TERMINAL" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label alignment="CENTER" layoutX="169.0" layoutY="254.0" prefHeight="112.0" prefWidth="483.0" text="Tough life...">
+         <font>
+            <Font name="Calibri" size="24.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="link" layoutX="244.0" layoutY="414.0" onAction="#gotoLogin" text="Login" />
+   </children>
+</Pane>
