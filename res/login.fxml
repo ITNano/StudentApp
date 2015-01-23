@@ -16,7 +16,7 @@
             </Label>
          </children>
       </Pane>
-      <TextField fx:id="studentID" alignment="CENTER" layoutX="222.0" layoutY="216.0" prefHeight="46.0" prefWidth="356.0" promptText="Student ID" />
+      <TextField fx:id="studentID" alignment="CENTER" layoutX="222.0" layoutY="216.0" onAction="#login" prefHeight="46.0" prefWidth="356.0" promptText="Student ID" />
       <Button layoutX="327.0" layoutY="300.0" mnemonicParsing="false" onAction="#login" prefHeight="46.0" prefWidth="146.0" text="Log in" />
       <Hyperlink layoutX="222.0" layoutY="410.0" onAction="#gotoRegister" text="Register" />
       <Hyperlink layoutX="222.0" layoutY="439.0" onAction="#gotoForgotID" text="Forgot student ID" />

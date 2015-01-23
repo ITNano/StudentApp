@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.FrontController">
    <children>
       <Pane prefHeight="77.0" prefWidth="800.0" style="-fx-background-color: #34495e;">
          <children>
@@ -16,10 +19,47 @@
             </Label>
          </children>
       </Pane>
-      <Label alignment="CENTER" layoutX="169.0" layoutY="254.0" prefHeight="112.0" prefWidth="483.0" text="You are now logged in">
-         <font>
-            <Font name="Calibri" size="24.0" />
-         </font>
-      </Label>
+      <Pane layoutY="77.0" prefHeight="93.0" prefWidth="800.0" style="-fx-border-color: #bbb; -fx-border-width: 1,0,0,0; -fx-background-color: #fff;">
+         <children>
+            <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@person_icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="studentName" layoutX="83.0" layoutY="21.0" prefHeight="29.0" prefWidth="147.0" text="Matz Larsson">
+               <font>
+                  <Font name="Calibri" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="studentProgramme" layoutX="84.0" layoutY="47.0" text="IT programme">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="courseSearchInput" layoutX="279.0" layoutY="27.0" onKeyReleased="#courseSearchChanged" prefHeight="41.0" prefWidth="300.0" promptText="Search course" />
+         </children>
+      </Pane>
+      <Pane layoutY="170.0" prefHeight="427.0" prefWidth="800.0">
+         <children>
+            <ScrollPane prefViewportHeight="430.0" prefViewportWidth="400.0">
+               <content>
+                  <VBox fx:id="activeCoursePanel" prefHeight="430.0" prefWidth="400.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="122.0" text="   Active courses" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <ScrollPane layoutX="400.0" prefViewportHeight="430.0" prefViewportWidth="398.0">
+               <content>
+                  <VBox fx:id="requiredCoursePanel" layoutX="400.0" prefHeight="430.0" prefWidth="398.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="140.0" text="   Required courses" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
    </children>
 </Pane>
