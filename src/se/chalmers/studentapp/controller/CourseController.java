@@ -1,11 +1,11 @@
 package se.chalmers.studentapp.controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -39,11 +39,12 @@ public class CourseController {
 		stateLabel.textFillProperty().set(stamps[state.getNum()].getTextColor());
 		
 		final ContextMenu contextMenu = getContextMenu(state);
-	    courseRoot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent mouseEvent) {
-	            contextMenu.show(courseRoot, mouseEvent.getScreenX(), mouseEvent.getScreenY());
-	        }
+	    courseRoot.setOnMouseClicked((MouseEvent event) -> {
+        	if(event.getButton().equals(MouseButton.SECONDARY)){
+        		contextMenu.show(courseRoot, event.getScreenX(), event.getScreenY());
+        	}else{
+        		contextMenu.hide();
+        	}
 	    });
 	}
 

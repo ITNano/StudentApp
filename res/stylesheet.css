@@ -1,0 +1,21 @@
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0;
+}
+
+
+.course{
+	-fx-border-color:#ccc;
+	-fx-border-width:0 0 1 0;
+}
+.course.first{
+	-fx-border-width:1 0 1 0 !important;
+}

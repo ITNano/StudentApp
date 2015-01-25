@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="courseRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="83.0" prefWidth="400.0" style="-fx-border-color: #eee;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.CourseController">
+<Pane fx:id="courseRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="400.0" style="-fx-border-color: #ccc; -fx-border-width: 0 0 1 0;" styleClass="course" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.chalmers.studentapp.controller.CourseController">
    <children>
       <Label fx:id="code" layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="65.0" text="Code">
          <font>
