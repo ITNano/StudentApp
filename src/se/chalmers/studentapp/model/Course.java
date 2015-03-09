@@ -6,7 +6,7 @@ public class Course {
 	private String name;
 	private double credits;
 	
-	public Course(String code, String name, double credits){
+	protected Course(String code, String name, double credits){
 		this.code = code;
 		this.name = name;
 		this.credits = credits;

@@ -2,6 +2,7 @@ package se.chalmers.studentapp.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -9,16 +10,27 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import se.chalmers.studentapp.model.ConcreteCourse;
+import se.chalmers.studentapp.model.ConcreteCourse.State;
 import se.chalmers.studentapp.model.Course;
+import se.chalmers.studentapp.model.IModel;
+import se.chalmers.studentapp.model.IModel.Response;
+import se.chalmers.studentapp.model.ModelFactory;
+import se.chalmers.studentapp.model.NoUserException;
+import se.chalmers.studentapp.util.ViewUtil;
 
 public class CourseController {
 	
 	private static CourseController inst = new CourseController();
 	private static StateStamp[] stamps = {inst.new StateStamp("completed", "#5fd359"),
-										  inst.new StateStamp("mandatory", "#d61b0a"),
+		  								  inst.new StateStamp("registered", "#ffdb00", Color.BLACK),
 										  inst.new StateStamp("queued", "#ed5e00"),
-										  inst.new StateStamp("registered", "#ffdb00", Color.BLACK)};
+										  inst.new StateStamp("mandatory", "#d61b0a"),
+										  inst.new StateStamp("optional", "#000000"),};
 
+	private ConcreteCourse course;
+	private CourseChangeListener listener;
+	
 	@FXML
 	private Pane courseRoot;
 	@FXML
@@ -30,7 +42,10 @@ public class CourseController {
 	@FXML
 	private Label stateLabel;
 	
-	public void setCourse(Course course, State state){
+	public void setCourse(ConcreteCourse concreteCourse){
+		this.course = concreteCourse;
+		Course course = concreteCourse.getCourse();
+		State state = concreteCourse.getState();
 		code.setText(course.getCode());
 		name.setText(course.getName());
 		credits.setText(course.getCredits()+" HP");
@@ -47,17 +62,43 @@ public class CourseController {
         	}
 	    });
 	}
+	
+	public void setChangeListener(CourseChangeListener listener){
+		this.listener = listener;
+	}
 
 	private void register(){
-		System.out.println("Registering "+code.getText());
+		try {
+			IModel model = ModelFactory.getCurrentModel();
+			Response response = model.register(course.getCourse().getCode());
+			if(response.didSucceed()){
+				model.updateCourseStatus(course);
+				if(listener != null){
+					listener.courseChanged(this);
+				}
+			}else{
+				ViewUtil.showError(courseRoot, response.getMessage());
+			}
+		} catch (NoUserException e) {
+			ViewUtil.gotoLogin(courseRoot);
+		}
 	}
 	
 	private void unregister(){
-		System.out.println("Unregistering "+code.getText());
-	}
-	
-	private void unqueue(){
-		System.out.println("Leaving queue for "+code.getText());
+		try {
+			IModel model = ModelFactory.getCurrentModel();
+			Response response = model.unregister(course.getCourse().getCode());
+			if(response.didSucceed()){
+				model.updateCourseStatus(course);
+				if(listener != null){
+					listener.courseChanged(this);
+				}
+			}else{
+				ViewUtil.showError(courseRoot, response.getMessage());
+			}
+		} catch (NoUserException e) {
+			ViewUtil.gotoLogin(courseRoot);
+		}
 	}
 	
 	private ContextMenu getContextMenu(State state){
@@ -68,12 +109,13 @@ public class CourseController {
 								unregister.setOnAction((ActionEvent event) -> {unregister();});
 								menu.getItems().add(unregister);
 								break;
-			case MANDATORY:		MenuItem register = new MenuItem("Register");
+			case MANDATORY: case NONE:
+								MenuItem register = new MenuItem("Register");
 								register.setOnAction((ActionEvent event) -> {register();});
 								menu.getItems().add(register);
 								break;
 			case QUEUED:		MenuItem unqueue = new MenuItem("Leave queue");
-								unqueue.setOnAction((ActionEvent event) -> {unqueue();});
+								unqueue.setOnAction((ActionEvent event) -> {unregister();});
 								menu.getItems().add(unqueue);
 								break;
 			default:			System.out.println("WARNING: UNIMPLEMENTED STATE!");
@@ -81,6 +123,26 @@ public class CourseController {
 		
 		return menu;
 	}
+	
+	public ConcreteCourse getConcreteCourse(){
+		return course;
+	}
+	
+	public Node getRoot(){
+		return courseRoot;
+	}
+	
+	public static State getState(String s){
+		switch(s){
+			case "completed":	return State.COMPLETED;
+			case "registered":	return State.REGISTERED;
+			case "queued":		return State.QUEUED;
+			case "mandatory":	return State.MANDATORY;
+			case "optional":	return State.NONE;
+			default:			return State.NONE;
+		}
+	}
+	
 	
 	private class StateStamp{
 		private String label;
@@ -103,21 +165,6 @@ public class CourseController {
 		}
 		public Color getTextColor(){
 			return textColor;
-		}
-	}
-	
-	public enum State{
-		COMPLETED(0),
-		MANDATORY(1),
-		QUEUED(2),
-		REGISTERED(3);
-		
-		private int num;
-		private State(int num){
-			this.num = num;
-		}
-		public int getNum(){
-			return num;
 		}
 	}
 }

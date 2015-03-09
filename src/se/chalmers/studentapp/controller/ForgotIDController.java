@@ -10,7 +10,7 @@ public class ForgotIDController {
 	private Hyperlink link;
 	
 	public void gotoLogin(){
-		ViewUtil.switchPage("login", link);
+		ViewUtil.gotoLogin(link);
 	}
 	
 }

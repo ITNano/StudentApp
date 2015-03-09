@@ -16,11 +16,13 @@
             </Label>
          </children>
       </Pane>
-      <TextField fx:id="name" alignment="CENTER" layoutX="222.0" layoutY="216.0" prefHeight="46.0" prefWidth="356.0" promptText="Full name" />
-      <Button layoutX="327.0" layoutY="397.0" mnemonicParsing="false" onAction="#register" prefHeight="46.0" prefWidth="146.0" text="Register" />
-      <Hyperlink layoutX="222.0" layoutY="467.0" onAction="#gotoLogin" text="Log in" />
-      <Label layoutX="222.0" layoutY="188.0" text="Full name" />
-      <Label layoutX="222.0" layoutY="279.0" text="Programme" />
-      <ComboBox fx:id="programme" editable="true" layoutX="222.0" layoutY="312.0" prefHeight="46.0" prefWidth="356.0" />
+      <TextField fx:id="name" alignment="CENTER" layoutX="222.0" layoutY="172.0" onKeyTyped="#nameChanged" prefHeight="46.0" prefWidth="356.0" promptText="Full name" />
+      <Button fx:id="registerButton" disable="true" layoutX="327.0" layoutY="434.0" mnemonicParsing="false" onAction="#register" prefHeight="46.0" prefWidth="146.0" text="Register" />
+      <Hyperlink layoutX="229.0" layoutY="489.0" onAction="#gotoLogin" text="Log in" />
+      <Label layoutX="222.0" layoutY="144.0" text="Full name" />
+      <Label layoutX="222.0" layoutY="239.0" text="Programme" />
+      <ComboBox fx:id="programme" layoutX="222.0" layoutY="270.0" onAction="#programmeChanged" prefHeight="46.0" prefWidth="356.0" />
+      <ComboBox fx:id="branch" layoutX="222.0" layoutY="364.0" prefHeight="46.0" prefWidth="356.0" />
+      <Label layoutX="222.0" layoutY="333.0" text="Branch" />
    </children>
 </Pane>

@@ -2,16 +2,20 @@ package se.chalmers.studentapp.model;
 
 public class User {
 	
-	private static User currentUser;
-	
+	private int id;
 	private String name;
 	private String branch;
 	private String programme;
 	
-	private User(String userID){
-		this.name = "Matz Larsson";
-		this.branch = "Software Engineer";
-		this.programme = "IT";
+	protected User(int id, String name, String branch, String programme){
+		this.id = id;
+		this.name = name;
+		this.branch = branch;
+		this.programme = programme;
+	}
+	
+	public int getID(){
+		return id;
 	}
 	
 	public String getName() {
@@ -24,22 +28,5 @@ public class User {
 
 	public String getProgramme() {
 		return programme;
-	}
-
-	
-	public static boolean login(String userID){
-		if(userID.length()>0){
-			System.out.println("Logging in with userID "+userID);
-			currentUser = new User(userID);
-		}
-		return userID.length()>0;
-	}
-	
-	public static void logout(){
-		currentUser = null;
-	}
-	
-	public static User getCurrentUser(){
-		return currentUser;
 	}
 }

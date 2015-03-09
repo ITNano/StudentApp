@@ -13,7 +13,7 @@
             <Font name="Calibri" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="stateLabel" alignment="CENTER" layoutX="85.0" layoutY="42.0" prefHeight="29.0" prefWidth="159.0" style="-fx-background-radius: 8,8,8,8;" textFill="WHITE">
+      <Label id="status" fx:id="stateLabel" alignment="CENTER" layoutX="85.0" layoutY="42.0" prefHeight="29.0" prefWidth="159.0" style="-fx-background-radius: 8,8,8,8;" textFill="WHITE">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>

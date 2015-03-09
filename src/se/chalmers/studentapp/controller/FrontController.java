@@ -1,16 +1,23 @@
 package se.chalmers.studentapp.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import se.chalmers.studentapp.controller.CourseController.State;
-import se.chalmers.studentapp.model.Course;
+import se.chalmers.studentapp.model.ConcreteCourse;
+import se.chalmers.studentapp.model.ConcreteCourse.State;
+import se.chalmers.studentapp.model.IModel;
+import se.chalmers.studentapp.model.ModelFactory;
+import se.chalmers.studentapp.model.NoUserException;
 import se.chalmers.studentapp.model.User;
 import se.chalmers.studentapp.util.ViewUtil;
 
-public class FrontController {
+public class FrontController implements CourseChangeListener{
 
 	@FXML
 	private Label studentName;
@@ -27,34 +34,98 @@ public class FrontController {
 	private boolean loaded = false;
 	
 	public void initialize(){
-		User user = User.getCurrentUser();
-		if(user != null){
-			studentName.setText(user.getName());
-			studentProgramme.setText(user.getBranch()+" ("+user.getProgramme()+")");
+		IModel model = ModelFactory.getCurrentModel();
+		if(model.isLoggedIn()){
+			User user = model.getCurrentUser();
+			if(user != null){
+				studentName.setText(user.getName());
+				studentProgramme.setText(user.getBranch()+" ("+user.getProgramme()+")");
+			}
+
+			try {
+				List<ConcreteCourse> courses = model.getCourses();
+				Collections.sort(courses, new Comparator<ConcreteCourse>(){
+					@Override
+					public int compare(ConcreteCourse c1, ConcreteCourse c2) {
+						return -c1.compareTo(c2);
+					}
+				});
+				for(ConcreteCourse c : courses){
+					addCourse(c, true);
+				}
+			} catch (NoUserException e) {
+				//User not logged in, switch to login
+				ViewUtil.gotoLogin(studentName);
+			}
+			studentName.requestFocus();
+		}else{
+			ViewUtil.gotoLogin(studentName);
 		}
-		
-		addCourse(new Course("TDA357", "Databases and stuff", 7.5), State.COMPLETED, true);
-		addCourse(new Course("MVE051", "Matematisk statistik", 7.5), State.REGISTERED, true);
-		addCourse(new Course("BLA098", "Kurs om blablabla", 7.5), State.QUEUED, false);
-		addCourse(new Course("KON433", "Kontroversiell kurs", 7.5), State.MANDATORY, false);
-		addCourse(new Course("TRI322", "Tripplekvadratisk mojs", 7.5), State.MANDATORY, false);
-		studentName.requestFocus();
 	}
 	
-	private void addCourse(Course course, State state, boolean active){
-		VBox box = (active?activeCoursePanel:requiredCoursePanel);
-		Node courseNode = ViewUtil.getNodeFromFXML("course", new ViewUtil.Function(){
-			public <T> void perform(T controller){
-				if(controller instanceof CourseController){
-					((CourseController)controller).setCourse(course, state);
+	private void addCourse(ConcreteCourse concreteCourse, boolean ignoreSort){
+		if(concreteCourse != null){
+			State state = concreteCourse.getState();
+			System.out.println("Adding course with state: "+state.name());
+			VBox box = (state==State.COMPLETED||state==State.REGISTERED?activeCoursePanel:requiredCoursePanel);
+			
+			final CourseChangeListener listener = this;
+			Node courseNode = ViewUtil.getNodeFromFXML("course", new ViewUtil.Function(){
+				public <T> void perform(T controller){
+					if(controller instanceof CourseController){
+						((CourseController)controller).setCourse(concreteCourse);
+						((CourseController)controller).setChangeListener(listener);
+					}
+				}
+			});
+			
+			int index = 0;
+			if(!ignoreSort){
+				Node statusNode;
+				State tmpState;
+				for(Node node : box.getChildren()){
+					statusNode = node.lookup("#status");
+					if(statusNode != null && statusNode instanceof Label){
+						tmpState = CourseController.getState(((Label)statusNode).getText());
+						if(tmpState != null && tmpState.getNum()>=concreteCourse.getState().getNum()){
+							break;
+						}
+					}
+					index++;
+				}
+			}else{
+				index = box.getChildren().size();
+			}
+			
+			if(index == 1){
+				courseNode.getStyleClass().add("first");
+				if(box.getChildren().size()>1){
+					box.getChildren().get(1).getStyleClass().remove("first");
 				}
 			}
-		});
-		
-		if(box.getChildren().size()<=1){
-			courseNode.getStyleClass().add("first");
+			
+			if(index>=box.getChildren().size()){
+				box.getChildren().add(courseNode);
+			}else{
+				box.getChildren().add(index, courseNode);
+			}
 		}
-		box.getChildren().add(courseNode);
+	}
+	
+	public void removeCourse(Node course){
+		if(activeCoursePanel.getChildren().size()>2 && activeCoursePanel.getChildren().get(0).equals(course)){
+			activeCoursePanel.getChildren().get(1).getStyleClass().add("first");
+		}
+		activeCoursePanel.getChildren().remove(course);
+		if(requiredCoursePanel.getChildren().size()>2 && requiredCoursePanel.getChildren().get(0).equals(course)){
+			requiredCoursePanel.getChildren().get(1).getStyleClass().add("first");
+		}
+		requiredCoursePanel.getChildren().remove(course);
+	}
+	
+	public void resetCourses(){
+		activeCoursePanel.getChildren().clear();
+		requiredCoursePanel.getChildren().clear();
 	}
 	
 	public void courseSearchChanged(){
@@ -65,6 +136,13 @@ public class FrontController {
 		}else{
 			System.out.println("Searching for '"+courseSearchInput.getText()+"'");
 		}
+	}
+
+	@Override
+	public void courseChanged(CourseController controller) {
+		System.out.println("COURSE CHANGED: "+controller.getConcreteCourse().getCourse().getCode());
+		removeCourse(controller.getRoot());
+		addCourse(controller.getConcreteCourse(), false);
 	}
 	
 }
