@@ -16,11 +16,13 @@
             </Label>
          </children>
       </Pane>
-      <Label alignment="CENTER" layoutX="169.0" layoutY="254.0" prefHeight="112.0" prefWidth="483.0" text="Tough life...">
+      <Hyperlink fx:id="link" layoutX="244.0" layoutY="414.0" onAction="#gotoLogin" text="Login" />
+      <TextField fx:id="nameField" alignment="CENTER" layoutX="222.0" layoutY="238.0" onKeyReleased="#nameChanged" prefHeight="46.0" prefWidth="356.0" promptText="Full name" />
+      <Button fx:id="retrieveButton" disable="true" layoutX="327.0" layoutY="323.0" mnemonicParsing="false" onAction="#retrieveID" prefHeight="46.0" prefWidth="146.0" text="Retrieve ID" />
+      <Label fx:id="messageLabel" alignment="CENTER" layoutX="222.0" layoutY="118.0" prefHeight="77.0" prefWidth="356.0">
          <font>
-            <Font name="Calibri" size="24.0" />
+            <Font size="18.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="link" layoutX="244.0" layoutY="414.0" onAction="#gotoLogin" text="Login" />
    </children>
 </Pane>

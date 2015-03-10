@@ -8,6 +8,7 @@ public interface IModel {
 	public boolean isLoggedIn();
 	public User getCurrentUser();
 	public void logout();
+	public List<Integer> getID(String name);
 	
 	public int registerUser(String name, Branch branch, Programme programme);
 	

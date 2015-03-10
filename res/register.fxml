@@ -16,7 +16,7 @@
             </Label>
          </children>
       </Pane>
-      <TextField fx:id="name" alignment="CENTER" layoutX="222.0" layoutY="172.0" onKeyTyped="#nameChanged" prefHeight="46.0" prefWidth="356.0" promptText="Full name" />
+      <TextField fx:id="name" alignment="CENTER" layoutX="222.0" layoutY="172.0" onKeyReleased="#nameChanged" prefHeight="46.0" prefWidth="356.0" promptText="Full name" />
       <Button fx:id="registerButton" disable="true" layoutX="327.0" layoutY="434.0" mnemonicParsing="false" onAction="#register" prefHeight="46.0" prefWidth="146.0" text="Register" />
       <Hyperlink layoutX="229.0" layoutY="489.0" onAction="#gotoLogin" text="Log in" />
       <Label layoutX="222.0" layoutY="144.0" text="Full name" />

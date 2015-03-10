@@ -63,6 +63,31 @@ public class ModelImpl implements IModel{
 	}
 
 	@Override
+	public List<Integer> getID(String name) {
+		List<Integer> list = new ArrayList<Integer>();
+		if(name != null){
+			PreparedStatement stmt = null;
+			try {
+				stmt = conn.prepareStatement("SELECT id FROM students WHERE name = ?");
+				stmt.setString(1, name);
+				ResultSet result = stmt.executeQuery();
+				while(result.next()){
+					list.add(result.getInt(1));
+				}
+			} catch (SQLException e) {
+				try {
+					if(stmt != null){
+						stmt.close();
+					}
+				} catch (SQLException e1) {}
+				System.out.println("Failed to insert student: "+e.getMessage());
+			}
+		}
+		
+		return list;
+	}
+
+	@Override
 	public int registerUser(String name, Branch branch, Programme programme) {
 		if(name != null && branch != null && programme != null){
 			PreparedStatement stmt = null;
